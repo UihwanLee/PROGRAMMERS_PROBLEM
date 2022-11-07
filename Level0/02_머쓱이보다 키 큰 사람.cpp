@@ -3,12 +3,12 @@
 
 using namespace std;
 
-int solution(vector<int> array, int n) {
+int solution(vector<int> array, int height) {
     int answer = 0;
     
-    for(auto e : array)
+    for(const auto e : array)
     {
-        if(e==n) ++answer;
+        if(e>height) ++answer;
     }
     
     return answer;
