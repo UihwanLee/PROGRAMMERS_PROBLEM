@@ -4,29 +4,23 @@
 
 using namespace std;
 
-int solution(string s) {
-    int answer = 0;
-    vector<string> v;
-    vector<string> stack;
+string solution(string letter) {
+    string answer = "";
+    vector<string> mos = {".-","-...","-.-.","-..",".","..-.","--.","....","..",".---","-.-",".-..","--","-.","---",".--.","--.-",".-.","...","-","..-","...-",".--","-..-","-.--","--.."};
+    vector<string> mos_letter;
     
-    stringstream ss(s);
+    stringstream ss(letter);
     string temp;
-    while(getline(ss, temp, ' ')) v.emplace_back(temp);
+    while(getline(ss, temp, ' ')) mos_letter.emplace_back(temp);
     
-    for(int i=0; i<v.size(); i++)
+    
+    for(const auto e : mos_letter)
     {
-        stack.emplace_back(v[i]);
-        if(v[i]=="Z")
+        for(int i=0; i<mos.size(); i++)
         {
-            stack.pop_back();
-            if(stack.size()>=1) stack.pop_back();
+            if(e==mos[i]) answer += char(i+97);
         }
-
     }
     
-    for(const auto e : stack)
-    {
-        answer += stoi(e);
-    }
     return answer;
 }
