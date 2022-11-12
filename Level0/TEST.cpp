@@ -8,19 +8,16 @@ using namespace std;
 
 int main()
 {
+	int i=1, j=13, k=1;
 	int answer = 0;
-    bool check = true;
-    string before = "olleh", after="hello"; 
-    sort(before.begin(), before.end());
-    sort(after.begin(), after.end());
-    
-    for(int i=0; before.length(); i++)
+    for(int n=i; n<=j; n++)
     {
-        if(before[i]!=after[i]) check = false;
+        if(to_string(n).find(to_string(k))!=string::npos) 
+		{
+			cout << n << endl;
+			answer++;
+		}
     }
-
-    answer = (check) ? 1 : 0;
-    
     cout << answer;
     
     return 0;
