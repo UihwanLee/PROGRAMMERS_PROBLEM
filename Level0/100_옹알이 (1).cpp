@@ -1,17 +1,11 @@
-#include <iostream>
 #include <string>
 #include <vector>
 #include <algorithm>
-#include <map>
-#include <cmath>
-#include <sstream>
 
 using namespace std;
 
-int main()
-{
-	vector<string> babbling = { "ayaye", "uuuma", "ye", "yemawoo", "ayaa"};
-	int answer = 0;
+int solution(vector<string> babbling) {
+    int answer = 0;
     int idx;
     vector<string> v = {"aya", "ye", "woo", "ma"};
     
@@ -42,7 +36,6 @@ int main()
         }
         if(check) answer++;
     }
-	cout << answer;
-
-    return 0;
+    
+    return answer;
 }
