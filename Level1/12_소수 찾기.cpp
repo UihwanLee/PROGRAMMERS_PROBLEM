@@ -16,12 +16,8 @@ int solution(int n) {
             {
                 arr[j] = false;
             }
+            answer++;
         }
-    }
-    
-    for(int i=2; i<=n; i++)
-    {
-        if(arr[i]) answer++;
     }
     
     return answer;
