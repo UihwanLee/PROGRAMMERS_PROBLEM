@@ -10,31 +10,14 @@ using namespace std;
 
 int main()
 {
-	string s = "P"; int n = 24;
-	string answer = "";
-    bool check = false;
-    for(const auto c : s)
+	long long n = 12345;
+	vector<int> answer;
+    string s = to_string(n);
+    for(int i=s.size()-1; i>=0; i--)
     {
-        int num = (int)c;
-        if(!((num>=65 && num<=90) || (num>=97 && num<=122))) 
-        {
-            answer += c;
-            continue;
-        }
-        int check = (num<97);
-        if(check)
-        {
-            int tmp = (num+n>90) ? num+n-90 : 0;
-            num = (tmp==0) ? num+n : 64+tmp;
-        }
-        else
-        {
-            int tmp = (num+n>122) ? num+n-122 : 0;
-            num = (tmp==0) ? num+n : 96+tmp;
-        }
-        answer += (char)num;
+        answer.emplace_back(s[i]-'0');
+        cout << s[i]-'0' << '\n';
     }
-    cout << answer;
     
     return 0;
 } 
