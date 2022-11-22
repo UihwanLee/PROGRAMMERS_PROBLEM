@@ -1,17 +1,10 @@
-#include <iostream>
 #include <string>
 #include <vector>
-#include <algorithm>
-#include <map>
-#include <cmath>
-#include <sstream>
 
 using namespace std;
 
-int main()
-{
-	string s = "P"; int n = 24;
-	string answer = "";
+string solution(string s, int n) {
+    string answer = "";
     bool check = false;
     for(const auto c : s)
     {
@@ -34,7 +27,5 @@ int main()
         }
         answer += (char)num;
     }
-    cout << answer;
-    
-    return 0;
-} 
+    return answer;
+}
