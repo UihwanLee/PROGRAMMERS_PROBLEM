@@ -8,17 +8,16 @@
 
 using namespace std;
 
-bool isPow(long long n)
-{
-    return (sqrt(n)-(long long)(sqrt(n))==0);
-}
-
 int main()
 {
-	long long n = 121;
-	long long answer = 0;
-    answer = (isPow(n)) ? pow(sqrt(n)+1,2) : -1;
-    cout << isPow(n);
+	int a, sum=0;
+	
+	for(int i=0; i<6; i++)
+	{
+		cin >> a;
+		sum += a;
+	}
+	cout << sum;
     
     return 0;
 } 
