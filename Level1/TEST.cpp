@@ -5,30 +5,61 @@
 #include <map>
 #include <cmath>
 #include <sstream>
+#include <map>
 
 using namespace std;
 
 int main()
 {
-	vector<int> answers = {1, 2, 3, 4, 5};
-	vector<int> answer;
-    int cnt_p1=0, cnt_p2=0, cnt_p3=0, cnt_max=0;
-    vector<int> p1 = {1, 2, 3, 4, 5};
-    vector<int> p2 = {2, 1, 2, 3, 2, 4, 2, 5};
-    vector<int> p3 = {3, 3, 1, 1, 2, 2, 4, 4, 5, 5};
+	int n = 5;
+	vector<int> lost = {2,4}, reserve = {1, 3, 5};
+	// lost = {1, 6, 13} reserver = { false: 2, 5, 10, 12 / true: 3, 4, 7, 8, 9, 11}
+	// answer = 13 - 7 + 4 + 1 = 11
+	
+	int answer = 0;
+	int cnt_reserve_lost = 0; // 여벌 체육복을 가져온 학생 중 도난 당한 학생 수
+    int cnt_reserve = 0; // 도난 당한 학생 수들 중에서 여벌의 체육복 가져올 수 있는 학생 수
+    int cnt = 0, cnt_lost = lost.size();
+    sort(lost.begin(), lost.end());
+    map<int, bool> m_reserve; // 여벌 체육복 여분 map
+    for(auto key : reserve) m_reserve.insert(pair<int, bool>(key, true));
     
-    for(int i=0; i<answers.size(); i++){
-        cout << i%p1.size() << " " << p2[i%p2.size()] << " " << p3[i%p3.size()] << " ";
-        if(answers[i] == p1[i%p1.size()]) cnt_p1++;
-        if(answers[i] == p2[i%p2.size()]) cnt_p2++;
-        if(answers[i] == p3[i%p3.size()]) cnt_p3++;
+    
+    // 여벌 체육복을 가져온 학생 중 도난 당할 경우 체크
+    for(int i=0; i<lost.size();) {
+        if(m_reserve.find(lost[i])!=m_reserve.end()){
+            m_reserve[lost[i]] = false;
+            lost.erase(lost.begin() + i);
+            cnt_reserve_lost++;
+        } 
+        else{
+        	i++;
+		}
     }
-    
-    cnt_max = (cnt_p1>=cnt_p2 && cnt_p1>=cnt_p3) ? cnt_p1 : (cnt_p2>=cnt_p1 && cnt_p2>=cnt_p3) ?  cnt_p2 : cnt_p3;
-    if(cnt_max==cnt_p1) answer.emplace_back(1);
-    if(cnt_max==cnt_p2) answer.emplace_back(2);
-    if(cnt_max==cnt_p3) answer.emplace_back(3);
-    //cout << answer;
+ 
+    // 도난 당한 리스트를 돌면서 여벌의 체육복을 가져올 수 있는지 체크
+    // 이때 최대로 빌려올 수 있게 작은 수부터 체크
+    for(auto key : lost){
+    	bool check = false; 
+        if(m_reserve.find(key-1)!=m_reserve.end()) { 
+            if(m_reserve[key-1]) {
+                m_reserve[key-1] = false;
+                check = true;
+                cnt_reserve++;
+            }
+        }
+        
+        // 체육복을 빌렸으면 넘어간다.
+        if(check) continue;
+        if(m_reserve.find(key+1)!=m_reserve.end()) { 
+            if(m_reserve[key+1]) {
+                m_reserve[key+1] = false;
+                cnt_reserve++;
+            }
+        }
+    }
+    answer = n - cnt_lost + cnt_reserve_lost + cnt_reserve;
+    cout << answer;
     
     return 0;
 } 
