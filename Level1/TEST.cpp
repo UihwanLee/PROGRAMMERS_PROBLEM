@@ -11,54 +11,56 @@ using namespace std;
 
 int main()
 {
-	int n = 5;
-	vector<int> lost = {2,4}, reserve = {1, 3, 5};
-	// lost = {1, 6, 13} reserver = { false: 2, 5, 10, 12 / true: 3, 4, 7, 8, 9, 11}
-	// answer = 13 - 7 + 4 + 1 = 11
-	
+	vector<vector<int>> board = { {1, 1, 1, 1, 1}, {1, 1, 1, 1, 1}, {1, 1, 1, 1, 1}, {1, 1, 1, 1, 1}, {1, 1, 1, 1, 1} };
+	vector<int> moves = { 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5};
 	int answer = 0;
-	int cnt_reserve_lost = 0; // 여벌 체육복을 가져온 학생 중 도난 당한 학생 수
-    int cnt_reserve = 0; // 도난 당한 학생 수들 중에서 여벌의 체육복 가져올 수 있는 학생 수
-    int cnt = 0, cnt_lost = lost.size();
-    sort(lost.begin(), lost.end());
-    map<int, bool> m_reserve; // 여벌 체육복 여분 map
-    for(auto key : reserve) m_reserve.insert(pair<int, bool>(key, true));
+    vector<int> index(board.size()+1, 0); // board의 각 열 최상단에 들어있는 index 배열
+    vector<int> stack; // 뽑힌 인형이 담길 벡터
     
-    
-    // 여벌 체육복을 가져온 학생 중 도난 당할 경우 체크
-    for(int i=0; i<lost.size();) {
-        if(m_reserve.find(lost[i])!=m_reserve.end()){
-            m_reserve[lost[i]] = false;
-            lost.erase(lost.begin() + i);
-            cnt_reserve_lost++;
-        } 
-        else{
-        	i++;
-		}
+    // index 뽑기
+    for(int i=0; i<board.size(); i++){
+        for(int j=0; j<board.size(); j++){
+            // index에 이미 값이 들어있는 경우가 아닐 때
+            if(board[i][j]!=0 && index[j]==0){
+                index[j] = i;
+            }
+        }
     }
- 
-    // 도난 당한 리스트를 돌면서 여벌의 체육복을 가져올 수 있는지 체크
-    // 이때 최대로 빌려올 수 있게 작은 수부터 체크
-    for(auto key : lost){
-    	bool check = false; 
-        if(m_reserve.find(key-1)!=m_reserve.end()) { 
-            if(m_reserve[key-1]) {
-                m_reserve[key-1] = false;
-                check = true;
-                cnt_reserve++;
+      
+    // moves 돌면서 인형을 뽑는다.
+    for(auto n : moves){
+        // n번째 열이 빈열이면 continue
+        if(index[n-1]>= board.size()) continue;
+        
+        // board안에 인형이 있는지 체크하고 있으면 stack에 넣음 && index 갱신
+        if(board[index[n-1]][n-1]!=0){
+            stack.emplace_back(board[index[n-1]][n-1]);
+            index[n-1]++;
+        }
+    }
+    
+    // stack을 돌면서 연속되는 인형 체크
+    while(true){
+        bool check = true;
+        
+        // stack이 다 비워져 있거나 1개 밖에 없으면 break
+        if(stack.empty() || stack.size()==1) break;
+        
+        for(int i=0; i<=stack.size()-2;){
+            if(stack[i]==stack[i+1]){
+                answer+=2;
+                stack.erase(stack.begin() + (i+1));
+                stack.erase(stack.begin() + i);
+                check = false;
+                break;
+            }else{
+                i++;
             }
         }
         
-        // 체육복을 빌렸으면 넘어간다.
-        if(check) continue;
-        if(m_reserve.find(key+1)!=m_reserve.end()) { 
-            if(m_reserve[key+1]) {
-                m_reserve[key+1] = false;
-                cnt_reserve++;
-            }
-        }
+        // 추가적인 2개의 연속되는 인형이 없으면 종료
+        if(check) break;
     }
-    answer = n - cnt_lost + cnt_reserve_lost + cnt_reserve;
     cout << answer;
     
     return 0;
