@@ -12,7 +12,7 @@ using namespace std;
 int main()
 {
 	vector<vector<int>> board = { {1, 1, 1, 1, 1}, {1, 1, 1, 1, 1}, {1, 1, 1, 1, 1}, {1, 1, 1, 1, 1}, {1, 1, 1, 1, 1} };
-	vector<int> moves = { 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5};
+	vector<int> moves = { 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5 };
 	int answer = 0;
     vector<int> index(board.size()+1, 0); // board의 각 열 최상단에 들어있는 index 배열
     vector<int> stack; // 뽑힌 인형이 담길 벡터
