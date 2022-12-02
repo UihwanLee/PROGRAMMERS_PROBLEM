@@ -9,58 +9,81 @@
 
 using namespace std;
 
+string GET_NEW_ID(string _id){
+    string new_id = "";
+    vector<string> sign = {"-","_", ".", "~", "!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "=", "+", "[", "{", "]", "}", ":", "?", ",", "<", ">", "/"};
+    bool pass = true; // 검열 성공 여부
+    
+    // 01. 빈 문자열 검사
+    if(_id=="") { pass=false; _id+="a"; }
+    
+    // 02. 처음이나 끝 . 검사
+    if(_id[0]=='.') { 
+        pass = false;
+        for(int i=1; i<_id.length(); i++) new_id += _id[i];
+    }
+    else if(_id[_id.length()-1]=='.'){
+        pass = false;
+        for(int i=1; i<_id.length(); i++) new_id += _id[i];
+    }
+    
+    
+    // 03. 2자 이하 검사
+    if(_id.length()<=2) {
+        pass = false;
+        while(_id.length()<=2) _id += _id[_id.length()-1];
+    }
+    
+    // 04. 16장 이상 검사
+    if(_id.length()>=16) {
+        pass = false;
+        for(int i=0; i<15; i++){
+            new_id += _id[i];
+        }
+    }
+    
+    // 05. .. -> . 검사
+    auto idx = _id.find("..");
+    if(idx!=string::npos){
+        pass = false;
+        _id.replace(idx, _id.length(), ".");
+    }
+    
+    // 06. 특수 문자 제거 검사
+    for(int i=0; i<_id.length(); i++){
+        if(!(isalpha(_id[i]) || isdigit(_id[i]))){
+            for(auto s : sign){
+                idx = _id.find(s);
+                if(idx==string::npos){
+                    pass = false;
+                    //_id.erase(_id.begin() + i);
+                }
+            }
+        }
+        
+        // 07. 대문자 검사
+        if(isalpha(_id[i])){
+            if((int)_id[i] < 97) _id[i] = (char)((int)_id[i] + 32);
+        }
+    }
+    
+    if(new_id=="") new_id = _id;
+    
+    /*
+    // 검열 성공 시 new_id return 
+    if(pass) return new_id;
+    // 검열 실패 시 다시 검열
+    else return (GET_NEW_ID(new_id));
+    */
+    return new_id;
+}
+
+
 int main()
 {
-	vector<vector<int>> board = { {1, 1, 1, 1, 1}, {1, 1, 1, 1, 1}, {1, 1, 1, 1, 1}, {1, 1, 1, 1, 1}, {1, 1, 1, 1, 1} };
-	vector<int> moves = { 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5 };
-	int answer = 0;
-    vector<int> index(board.size()+1, 0); // board의 각 열 최상단에 들어있는 index 배열
-    vector<int> stack; // 뽑힌 인형이 담길 벡터
-    
-    // index 뽑기
-    for(int i=0; i<board.size(); i++){
-        for(int j=0; j<board.size(); j++){
-            // index에 이미 값이 들어있는 경우가 아닐 때
-            if(board[i][j]!=0 && index[j]==0){
-                index[j] = i;
-            }
-        }
-    }
-      
-    // moves 돌면서 인형을 뽑는다.
-    for(auto n : moves){
-        // n번째 열이 빈열이면 continue
-        if(index[n-1]>= board.size()) continue;
-        
-        // board안에 인형이 있는지 체크하고 있으면 stack에 넣음 && index 갱신
-        if(board[index[n-1]][n-1]!=0){
-            stack.emplace_back(board[index[n-1]][n-1]);
-            index[n-1]++;
-        }
-    }
-    
-    // stack을 돌면서 연속되는 인형 체크
-    while(true){
-        bool check = true;
-        
-        // stack이 다 비워져 있거나 1개 밖에 없으면 break
-        if(stack.empty() || stack.size()==1) break;
-        
-        for(int i=0; i<=stack.size()-2;){
-            if(stack[i]==stack[i+1]){
-                answer+=2;
-                stack.erase(stack.begin() + (i+1));
-                stack.erase(stack.begin() + i);
-                check = false;
-                break;
-            }else{
-                i++;
-            }
-        }
-        
-        // 추가적인 2개의 연속되는 인형이 없으면 종료
-        if(check) break;
-    }
+	string new_id = "...!@BaT#*..y.abcdefghijklm";
+	string answer = "";
+    answer = GET_NEW_ID(new_id);
     cout << answer;
     
     return 0;

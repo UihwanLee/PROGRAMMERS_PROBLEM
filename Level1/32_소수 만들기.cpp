@@ -31,8 +31,7 @@ void Comb(vector<int> nums, vector<int> comb, int index, int depth){
         }
     }
 }
-
-
+	
 int solution(vector<int> nums) {
     
     vector<int> comb(PICK);
