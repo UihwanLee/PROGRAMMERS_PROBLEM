@@ -50,13 +50,14 @@ string GET_NEW_ID(string _id){
     }
     
     // 06. 특수 문자 제거 검사
-    for(int i=0; i<_id.length(); i++){
+    for(int i=0; i<_id.length();){
         if(!(isalpha(_id[i]) || isdigit(_id[i]))){
             for(auto s : sign){
                 idx = _id.find(s);
                 if(idx==string::npos){
                     pass = false;
                     //_id.erase(_id.begin() + i);
+                    // i++ 해야함 
                 }
             }
         }
