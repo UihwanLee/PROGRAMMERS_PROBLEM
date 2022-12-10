@@ -9,16 +9,12 @@ int solution(string s) {
     int i;
     vector<string> nums = {"zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"};
     
-    while(true){
-        int idx;
-        for(i=0; i<nums.size(); i++){
-            idx = s.find(nums[i]);
-            if(idx == string::npos) break;
-            s.replace(idx, s.length(), to_string(i));
+    int idx;
+    for(i=0; i<nums.size(); i++){
+        while((idx = s.find(nums[i])) != string::npos){
+            s.replace(idx, nums[i].length(), to_string(i));
         }
-        
-        if(idx == string::npos) break;
     }
-    //answer = stoi(s);
+    answer = stoi(s);
     return answer;
 }
