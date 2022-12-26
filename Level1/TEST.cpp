@@ -29,7 +29,7 @@ int main()
     }
     
     for(int i=0; i<answer.size(); i++){
-    	cout << answer[i] << " ";
+    	cout << answer[i];
 	}
 	
 	return 0;
